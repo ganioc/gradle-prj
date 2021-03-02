@@ -1,7 +1,41 @@
-apply plugin : 'java'
+plugins {
+    id 'java-library'
+}
 
 java {
     toolchain{
         languageVersion=JavaLanguageVersion.of(11)
     }
 }
+
+task createSchema{
+    println 'create schema'
+}
+
+
+task hello 
+hello {
+    dependsOn 'createSchema'
+    println 'Begin ...'
+}
+hello {
+     doLast {
+        println 'hello, world'
+        println '2nd layer'
+    }
+}
+
+
+task loadTestData(dependsOn: createSchema){
+    println 'load test data'
+}
+
+loadTestData.onlyIf{
+    System.properties['load.data'] == 'true'
+}
+
+task echoMyPath {
+    println "This task\'s path is ${path}"
+}
+
+version='1.0.1'
